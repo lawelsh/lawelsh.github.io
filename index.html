@@ -59,9 +59,9 @@
 						<div class="content">
 							<h2>Curriculum Vitae</h2>
 							<p>To download a copy of my CV, please click <a href="docs/website_cv.pdf" target="_blank">here</a>. Or, see the embedded version below.</p>
-							<object data="docs/website_cv.pdf" type="application/pdf" width="800px" height="400px">
-				<embed src="docs/website_cv.pdf" type="application/pdf" />
-				</object>
+							<div id="pdf-placeholder" style="width:800px; height:400px; background:#f0f0f0; display:flex; align-items:center; justify-content:center;">
+							  <p>Loading PDF...</p>
+							</div>
 							<ul class="actions stacked">
 								<li><a href="#third" class="button">Learn More</a></li>
 							</ul>
@@ -137,6 +137,32 @@
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
 
+
+		<!-- load CV-->
+		<script>
+		  const placeholder = document.getElementById('pdf-placeholder');
+
+		  const observer = new IntersectionObserver((entries) => {
+			entries.forEach(entry => {
+			  if (entry.isIntersecting) {
+				// Create and insert the object element
+				const obj = document.createElement('object');
+				obj.data = 'docs/website_cv.pdf';
+				obj.type = 'application/pdf';
+				obj.width = '800px';
+				obj.height = '400px';
+				obj.innerHTML = '<embed src="docs/website_cv.pdf" type="application/pdf" />';
+
+				placeholder.replaceWith(obj);
+				observer.disconnect(); // Stop observing once loaded
+			  }
+			});
+		  }, {
+			rootMargin: '200px' // Start loading 200px before it comes into view
+		  });
+
+		  observer.observe(placeholder);
+		</script>
 
 		<!-- make load a top -->
 	<script>
